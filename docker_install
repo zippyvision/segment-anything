@@ -1,0 +1,18 @@
+To build docker image:
+
+
+DOCKER_BUILDKIT=1 docker build --ssh default -t sam_cuda .
+
+
+To run docker container:
+
+docker run --gpus all -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v /home/vitalijszv/Projects/vms-ai-segmentation:/app sam_cuda
+
+
+
+docker run --gpus all -it --ipc=host --rm --ulimit memlock=-1 -p 8888:8888 --ulimit stack=67108864 -v /home/vitalijszv/Projects/segment-anything:/app -v /home/vitalijszv/Projects/models:/app/models sam_cuda
+
+
+jupyter notebook
+
+# copy link from terminal onto host PC
