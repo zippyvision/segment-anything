@@ -1,18 +1,40 @@
+# forward jupyter notebook port to local pc
+ssh -L 8888:127.0.0.1:8888 zippy@dev-3090
+
+
 To build docker image:
-
-
-DOCKER_BUILDKIT=1 docker build --ssh default -t sam_cuda .
+DOCKER_BUILDKIT=1 docker build -t sam_cuda .
 
 
 To run docker container:
+docker run --gpus all -it --ipc=host --rm --ulimit memlock=-1 -p 8888:8888 --ulimit stack=67108864 sam_cuda
 
-docker run --gpus all -it --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v /home/vitalijszv/Projects/vms-ai-segmentation:/app sam_cuda
+# clone reoo
+git clone https://oauth2:GITHUB_TOKEN@github.com/zippyvision/segment-anything.git
+
+# install SAM systemwide
+cd segment-anything
+python -m pip install -e .
+
+
+#if still in branch
+git checkout add_docker
+ 
+# install aditional stuff if required
+python -m pip install pycocotools matplotlib onnxruntime onnx
 
 
 
-docker run --gpus all -it --ipc=host --rm --ulimit memlock=-1 -p 8888:8888 --ulimit stack=67108864 -v /home/vitalijszv/Projects/segment-anything:/app -v /home/vitalijszv/Projects/models:/app/models sam_cuda
+# create models folder and download weights
+mkdir models
+cd models
+wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth
+wget https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth
 
 
+# run jupyter notebook at port 8888
 jupyter notebook
+
 
 # copy link from terminal onto host PC
