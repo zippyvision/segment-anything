@@ -10,7 +10,7 @@ To run docker container:
 docker run --gpus all -it --ipc=host --rm --ulimit memlock=-1 -p 8888:8888 --ulimit stack=67108864 sam_cuda
 
 # clone reoo
-git clone https://oauth2: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@github.com/zippyvision/segment-anything.git
+git clone https://oauth2:GITHUB_TOKEN@github.com/zippyvision/segment-anything.git
 
 # install SAM systemwide
 cd segment-anything
